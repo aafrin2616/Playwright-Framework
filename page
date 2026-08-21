@@ -1,0 +1,44 @@
+import {expect, test} from "@playwright/test"
+import Registration from "../testData/Registration.json"
+import { selectDropDown } from "../Utilies/uitilies"
+
+test("Registration script",async({page})=>{
+
+
+page.goto(Registration.url)
+    await page.getByText("Register").click()
+    await page.locator('#gender-female').check()
+    await page.locator('#FirstName').fill(Registration.firstName)
+    await page.locator('#LastName').fill(Registration.lastName)
+    await page.locator('#Email').fill(Registration.email)
+    await page.locator('#Password').fill(Registration.password)
+    await page.locator('#ConfirmPassword').fill(Registration.password)
+    await page.locator('#register-button').click()
+    await page.locator('//input[@value="Continue"]').click()
+
+    // await page.getByText('Log in').click()                        
+    // await page.locator('#Email').fill(Registration.email)   
+    // await page.locator('#Password').fill(Registration.password)
+    // await page.locator('//input[@value="Log in"]').click()
+    await page.locator('//input[@name="NewsletterEmail"]').fill(Registration.email)
+    await page.locator('//input[@value="Subscribe"]').click()
+    await page.waitForTimeout(3000)
+    
+    await expect(page.locator('//div[@id="newsletter-result-block"]')).toBeVisible()
+    await page.getByText("Addresses").click()
+    await page.locator('//input[@value="Add new"]').click()
+    await page.locator('#Address_FirstName').fill(Registration.firstName)
+    await page.locator('#Address_LastName').fill(Registration.lastName)
+    await page.locator('#Address_Email').fill(Registration.email)
+    await page.locator('#Address_CountryId').click()
+
+    await selectDropDown(page,"#Address_CountryId","India")
+    // await page.locator('#Address_CountryId').selectOption("India")
+    await page.getByLabel('City:').fill(Registration.city)
+    await page.getByLabel('Address 1:').fill(Registration.add1)
+    await page.getByLabel('Address 2:').fill(Registration.add2)
+    await page.locator('#Address_ZipPostalCode').fill(Registration.pincode)
+    await page.locator('#Address_PhoneNumber').fill(Registration.mobile)
+    await page.locator('//input[@value="Save"]').click()
+    await page.getByText('Log out').click()
+})   

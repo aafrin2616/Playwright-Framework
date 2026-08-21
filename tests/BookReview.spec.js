@@ -10,7 +10,7 @@ test("Book Category",async({page})=>{
     page.goto(Registration.url)
 
     let loginP = new LoginPage(page)
-    await loginP.login(Login.email,Login.password)
+    // await loginP.login(Login.email,Login.password)
 
 
     let bookCategorieP = new BookCategoryPage(page)
